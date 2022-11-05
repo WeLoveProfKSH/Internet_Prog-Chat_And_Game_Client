@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 
-char *SERVERIP = (char *)"127.0.0.1";
+char* SERVERIP = (char*)"127.0.0.1";
 #define SERVERPORT 9000
 #define BUFSIZE    512
 
@@ -15,7 +15,7 @@ int retval;
 
 std::string nick; // 채팅방 닉네임
 
-DWORD WINAPI Svrrecv(LPVOID arg){	// 메시지 수신 스레드용
+DWORD WINAPI Svrrecv(LPVOID arg) {	// 메시지 수신 스레드용
 	char r[BUFSIZE + 1];
 
 	while (1) {
@@ -30,7 +30,7 @@ DWORD WINAPI Svrrecv(LPVOID arg){	// 메시지 수신 스레드용
 	}
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char* argv[]) {
 	// 명령행 인수가 있으면 IP 주소로 사용
 	if (argc > 1) SERVERIP = argv[1];
 	if (argc > 2) nick = argv[2];
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]){
 	serveraddr.sin_family = AF_INET;
 	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
 	serveraddr.sin_port = htons(SERVERPORT);
-	retval = connect(sock, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
 
 	// 서버로부터 데이터 수신 시작 (수신 전용 스레드 하나 돌리기)
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
 	else { CloseHandle(hThread); }
 
 	printf("<글자를 입력하시고 엔터를 누르시면 메시지가 전송됩니다.>\n");
-	for(int i = 0; i < 30; i++)	printf("──");
+	for (int i = 0; i < 30; i++)	printf("──");
 	printf("\n\n");
 	// 서버와 데이터 통신
 	while (1) {
