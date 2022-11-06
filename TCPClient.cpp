@@ -1,4 +1,5 @@
 #include "Common.h"
+#include <direct.h>
 #include <iostream>
 #include <string>
 
@@ -35,10 +36,10 @@ int main(int argc, char* argv[]) {
 	// 2번째 인수는 닉네임으로
 	if (argc > 2) nick = argv[2];
 
-	if (nick == "") {	// 만일 닉네임이 인자값으로 주어지지 않았다면
+	while(nick == ""){	// 만일 닉네임이 인자값으로 주어지지 않았다면
 		printf("채팅방에서 사용할 이름을 정하십시오 : ");
 		std::cin >> nick;
-		getchar(); // 입력받고 입력버퍼 비우기
+		getchar(); // 입력받고 \n 한글자 지우기
 	}
 	nick = nick + " : ";
 
@@ -65,7 +66,8 @@ int main(int argc, char* argv[]) {
 	if (hThread == NULL) { closesocket(sock); }
 	else { CloseHandle(hThread); }
 	//-------------------------------------------------------------------------
-	printf("<글자를 입력하시고 엔터를 누르시면 메시지가 전송됩니다.>\n");
+	printf("< 글자를 입력하시고 엔터를 누르시면 메시지가 전송됩니다. >\n");
+	printf("< 종료하려면 'exit'를 입력하십시오. >\n");
 	for (int i = 0; i < 30; i++)	printf("──");
 	printf("\n\n");
 
@@ -80,20 +82,29 @@ int main(int argc, char* argv[]) {
 
 		strncat(buf, input, sizeof(input));	// buf랑 input이랑 합치기, -> "닉네임 : " + '사용자 입력'
 
+		if (strcmp(input, "exit\n") == 0) {		// exit 입력하면 프로그램 종료
+			printf("[프로그램을 종료합니다.]\n");
+			break;
+		}
+
+		if (strcmp(input, "blj\n") == 0) {	// blj 입력 받으면 블랙잭 실행
+			_getcwd(buf, 512);				// 현재 실행 경로 얻기
+			system(strcat(buf, "\\bljc.jar"));
+		}
+
 		// buf 배열에 '\n' 문자 제거
 		len = (int)strlen(buf);
 		if (buf[len - 1] == '\n')
 			buf[len - 1] = '\0';
-		if (strlen(buf) == 0)
-			break;
+
 		// input 배열에 '\n' 문자 제거
 		len = (int)strlen(input);
 		if (input[len - 1] == '\n')
 			input[len - 1] = '\0';
-		if (strlen(input) == 0)
-			break;
-
+		
 		// 서버로 데이터 보내기
+		if (strlen(input) == 0)	continue;	// 만일 사용자가 아무것도 입력하지 않았다면 넘기기
+
 		retval = send(sock, buf, (int)strlen(buf), 0);
 		if (retval == SOCKET_ERROR) {
 			err_display("send()");
