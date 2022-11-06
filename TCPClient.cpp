@@ -90,6 +90,7 @@ int main(int argc, char* argv[]) {
 		if (strcmp(input, "blj\n") == 0) {	// blj 입력 받으면 블랙잭 실행
 			_getcwd(buf, 512);				// 현재 실행 경로 얻기
 			system(strcat(buf, "\\bljc.jar"));
+			continue;
 		}
 
 		// buf 배열에 '\n' 문자 제거
