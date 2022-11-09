@@ -94,13 +94,13 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < 30; i++)	printf("──");
 	printf("\n\n");
 
+	printf("송신할 메시지 입력 >> ");
 	// 서버와 통신
 	while (1) {
 		//printf("\nbuf : '%s', input : '%s'\n", buf, input);	// 디버그용 출력
 		strcpy(buf, nick.c_str());	// 일단 buf에 "닉네임 : " 이런식으로 저장하기
 
 		// 보낼 데이터 입력
-		printf("송신할 메시지 입력 >> ");
 		if (fgets(input, BUFSIZE + 1, stdin) == NULL)	// fgets()함수로 input에 입력받는데, 아무것도 입력하지 않으면 break;
 			break;
 
@@ -149,6 +149,6 @@ int main(int argc, char* argv[]) {
 
 
 /*
-참고문헌 목록
+참고문헌 목록 : 
 https://pracon.tistory.com/123 (cmd 콘솔에서의 gotoxy()함수를 이용한 커서 위치 이동 테크닉)
 */
