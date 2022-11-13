@@ -9,16 +9,16 @@ char* SERVERIP = (char*)"127.0.0.1";
 #define SERVERPORT 9000
 #define BUFSIZE    512
 
-// µ¥ÀÌÅÍ Åë½Å¿¡ »ç¿ëÇÒ º¯¼ö
+// ë°ì´í„° í†µì‹ ì— ì‚¬ìš©í•  ë³€ìˆ˜
 SOCKET sock;
-char buf[BUFSIZE + 1];		// Å¬¶óÀÌ¾ğÆ®°¡ ¼­¹ö¿¡ º¸³¾ ¸Ş½ÃÁö¸¦ ´ã¾ÆµÑ ¹è¿­
-char input[BUFSIZE + 1];	// Å¬¶óÀÌ¾ğÆ®°¡ »ç¿ëÀÚ·ÎºÎÅÍ ÀÔ·Â ¹ŞÀº ¹®ÀÚ¸¦ ´ã¾ÆµÑ ¹è¿­
+char buf[BUFSIZE + 1];		// í´ë¼ì´ì–¸íŠ¸ê°€ ì„œë²„ì— ë³´ë‚¼ ë©”ì‹œì§€ë¥¼ ë‹´ì•„ë‘˜ ë°°ì—´
+char input[BUFSIZE + 1];	// í´ë¼ì´ì–¸íŠ¸ê°€ ì‚¬ìš©ìë¡œë¶€í„° ì…ë ¥ ë°›ì€ ë¬¸ìë¥¼ ë‹´ì•„ë‘˜ ë°°ì—´
 int len;
 int retval;
 
-std::string nick; // Ã¤ÆÃ¹æ ´Ğ³×ÀÓ
+std::string nick; // ì±„íŒ…ë°© ë‹‰ë„¤ì„
 
-int wherey()	//	Console Ã¢¿¡¼­ÀÇ Ä¿¼­ y°ª ¹İÈ¯ÇØÁÖ´Â ¸Ş¼­µå
+int wherey()	//	Console ì°½ì—ì„œì˜ ì»¤ì„œ yê°’ ë°˜í™˜í•´ì£¼ëŠ” ë©”ì„œë“œ
 {
 	if (consoleHandler == INVALID_HANDLE_VALUE)
 		return 0;
@@ -28,7 +28,7 @@ int wherey()	//	Console Ã¢¿¡¼­ÀÇ Ä¿¼­ y°ª ¹İÈ¯ÇØÁÖ´Â ¸Ş¼­µå
 }
 
 
-int gotoxy(int x, int y) // ConsoleÃ¢ Ä¿¼­ À§Ä¡ ÀÌµ¿
+int gotoxy(int x, int y) // Consoleì°½ ì»¤ì„œ ìœ„ì¹˜ ì´ë™
 {
 	if (consoleHandler == INVALID_HANDLE_VALUE)
 		return 0;
@@ -37,41 +37,41 @@ int gotoxy(int x, int y) // ConsoleÃ¢ Ä¿¼­ À§Ä¡ ÀÌµ¿
 	return 1;
 }
 
-DWORD WINAPI Svrrecv(LPVOID arg) {	// ¸Ş½ÃÁö ¼ö½Å ½º·¹µå¿ë
-	char r[BUFSIZE + 1];	// ¼ö½ÅÇÑ µ¥ÀÌÅÍ¸¦ ´ã¾ÆµÑ char ¹è¿­
+DWORD WINAPI Svrrecv(LPVOID arg) {	// ë©”ì‹œì§€ ìˆ˜ì‹  ìŠ¤ë ˆë“œìš©
+	char r[BUFSIZE + 1];	// ìˆ˜ì‹ í•œ ë°ì´í„°ë¥¼ ë‹´ì•„ë‘˜ char ë°°ì—´
 
-	while (1) {	// ¼­¹ö°¡ ÁÖ´Â µ¥ÀÌÅÍ ¹Ş±â
-		strcpy(r, "");	// recv()ÇÔ¼ö·Î µ¥ÀÌÅÍ¸¦ ¹Ş±âÀü¿¡ ¹è¿­ ºñ¿ì±â
-		retval = recv(sock, r, BUFSIZE, 0);	// µ¥ÀÌÅÍ ¼ö½Å
+	while (1) {	// ì„œë²„ê°€ ì£¼ëŠ” ë°ì´í„° ë°›ê¸°
+		strcpy(r, "");	// recv()í•¨ìˆ˜ë¡œ ë°ì´í„°ë¥¼ ë°›ê¸°ì „ì— ë°°ì—´ ë¹„ìš°ê¸°
+		retval = recv(sock, r, BUFSIZE, 0);	// ë°ì´í„° ìˆ˜ì‹ 
 
-		// ¹ŞÀº µ¥ÀÌÅÍ Ãâ·Â
+		// ë°›ì€ ë°ì´í„° ì¶œë ¥
 		r[retval] = '\0';
-		//printf("[TCP Å¬¶óÀÌ¾ğÆ®] %d¹ÙÀÌÆ®¸¦ ¹Ş¾Ò½À´Ï´Ù.\n", retval);
+		//printf("[TCP í´ë¼ì´ì–¸íŠ¸] %dë°”ì´íŠ¸ë¥¼ ë°›ì•˜ìŠµë‹ˆë‹¤.\n", retval);
 		gotoxy(0, wherey());
-		printf("[¸Ş½ÃÁö ¼ö½Å] >> %s\n\n", r);
-		printf("¼Û½ÅÇÒ ¸Ş½ÃÁö ÀÔ·Â >> ");
+		printf("[ë©”ì‹œì§€ ìˆ˜ì‹ ] >> %s\n\n", r);
+		printf("ì†¡ì‹ í•  ë©”ì‹œì§€ ì…ë ¥ >> ");
 	}
 }
 
 int main(int argc, char* argv[]) {
-	// ¸í·ÉÇà ÀÎ¼ö°¡ ÀÖÀ¸¸é IP ÁÖ¼Ò·Î »ç¿ë
+	// ëª…ë ¹í–‰ ì¸ìˆ˜ê°€ ìˆìœ¼ë©´ IP ì£¼ì†Œë¡œ ì‚¬ìš©
 	if (argc > 1) SERVERIP = argv[1];
-	// 2¹øÂ° ÀÎ¼ö´Â ´Ğ³×ÀÓÀ¸·Î
+	// 2ë²ˆì§¸ ì¸ìˆ˜ëŠ” ë‹‰ë„¤ì„ìœ¼ë¡œ
 	if (argc > 2) nick = argv[2];
 
-	while(nick == ""){	// ¸¸ÀÏ ´Ğ³×ÀÓÀÌ ÀÎÀÚ°ªÀ¸·Î ÁÖ¾îÁöÁö ¾Ê¾Ò´Ù¸é
-		printf("Ã¤ÆÃ¹æ¿¡¼­ »ç¿ëÇÒ ÀÌ¸§À» Á¤ÇÏ½Ê½Ã¿À : ");
+	while(nick == ""){	// ë§Œì¼ ë‹‰ë„¤ì„ì´ ì¸ìê°’ìœ¼ë¡œ ì£¼ì–´ì§€ì§€ ì•Šì•˜ë‹¤ë©´
+		printf("ì±„íŒ…ë°©ì—ì„œ ì‚¬ìš©í•  ì´ë¦„ì„ ì •í•˜ì‹­ì‹œì˜¤ : ");
 		std::cin >> nick;
-		getchar(); // ÀÔ·Â¹Ş°í \n ÇÑ±ÛÀÚ Áö¿ì±â
+		getchar(); // ì…ë ¥ë°›ê³  \n í•œê¸€ì ì§€ìš°ê¸°
 	}
 	nick = nick + " : ";
 
-	// À©¼Ó ÃÊ±âÈ­
+	// ìœˆì† ì´ˆê¸°í™”
 	WSADATA wsa{};
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return 1;
 
-	// ¼ÒÄÏ »ı¼º
+	// ì†Œì¼“ ìƒì„±
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET) err_quit("socket()");
 
@@ -84,71 +84,78 @@ int main(int argc, char* argv[]) {
 	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR) err_quit("connect()");
 
-	// ------- ¼­¹ö·ÎºÎÅÍ µ¥ÀÌÅÍ ¼ö½Å ½ÃÀÛ (¼ö½Å Àü¿ë ½º·¹µå ÇÏ³ª µ¹¸®±â) -----
+	// ------- ì„œë²„ë¡œë¶€í„° ë°ì´í„° ìˆ˜ì‹  ì‹œì‘ (ìˆ˜ì‹  ì „ìš© ìŠ¤ë ˆë“œ í•˜ë‚˜ ëŒë¦¬ê¸°) -----
 	HANDLE hThread = CreateThread(NULL, 0, Svrrecv, (LPVOID)sock, 0, NULL);
 	if (hThread == NULL) { closesocket(sock); }
 	else { CloseHandle(hThread); }
 	//-------------------------------------------------------------------------
-	printf("< ±ÛÀÚ¸¦ ÀÔ·ÂÇÏ½Ã°í ¿£ÅÍ¸¦ ´©¸£½Ã¸é ¸Ş½ÃÁö°¡ Àü¼ÛµË´Ï´Ù. >\n");
-	printf("< Á¾·áÇÏ·Á¸é 'exit'¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À. >\n");
-	for (int i = 0; i < 30; i++)	printf("¦¡¦¡");
+	printf("< ê¸€ìë¥¼ ì…ë ¥í•˜ì‹œê³  ì—”í„°ë¥¼ ëˆ„ë¥´ì‹œë©´ ë©”ì‹œì§€ê°€ ì „ì†¡ë©ë‹ˆë‹¤. >\n");
+	printf("< ì¢…ë£Œí•˜ë ¤ë©´ 'exit'ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤. >\n");
+	for (int i = 0; i < 30; i++)	printf("â”€â”€");
 	printf("\n\n");
 
-	printf("¼Û½ÅÇÒ ¸Ş½ÃÁö ÀÔ·Â >> ");
-	// ¼­¹ö¿Í Åë½Å
+	printf("ì†¡ì‹ í•  ë©”ì‹œì§€ ì…ë ¥ >> ");
+	// ì„œë²„ì™€ í†µì‹ 
 	while (1) {
-		//printf("\nbuf : '%s', input : '%s'\n", buf, input);	// µğ¹ö±×¿ë Ãâ·Â
-		strcpy(buf, nick.c_str());	// ÀÏ´Ü buf¿¡ "´Ğ³×ÀÓ : " ÀÌ·±½ÄÀ¸·Î ÀúÀåÇÏ±â
+		//printf("\nbuf : '%s', input : '%s'\n", buf, input);	// ë””ë²„ê·¸ìš© ì¶œë ¥
+		strcpy(buf, nick.c_str());	// ì¼ë‹¨ bufì— "ë‹‰ë„¤ì„ : " ì´ëŸ°ì‹ìœ¼ë¡œ ì €ì¥í•˜ê¸°
 
-		// º¸³¾ µ¥ÀÌÅÍ ÀÔ·Â
-		if (fgets(input, BUFSIZE + 1, stdin) == NULL)	// fgets()ÇÔ¼ö·Î input¿¡ ÀÔ·Â¹Ş´Âµ¥, ¾Æ¹«°Íµµ ÀÔ·ÂÇÏÁö ¾ÊÀ¸¸é break;
+		// ë³´ë‚¼ ë°ì´í„° ì…ë ¥
+		if (fgets(input, BUFSIZE + 1, stdin) == NULL)	// fgets()í•¨ìˆ˜ë¡œ inputì— ì…ë ¥ë°›ëŠ”ë°, ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šìœ¼ë©´ break;
 			break;
 
-		strncat(buf, input, sizeof(input));	// buf¶û inputÀÌ¶û ÇÕÄ¡±â, -> "´Ğ³×ÀÓ : " + '»ç¿ëÀÚ ÀÔ·Â'
+		strncat(buf, input, sizeof(input));	// bufë‘ inputì´ë‘ í•©ì¹˜ê¸°, -> "ë‹‰ë„¤ì„ : " + 'ì‚¬ìš©ì ì…ë ¥'
 
-		if (strcmp(input, "exit\n") == 0) {		// exit ÀÔ·ÂÇÏ¸é ÇÁ·Î±×·¥ Á¾·á
-			printf("[ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.]\n");
+		if (strcmp(input, "exit\n") == 0) {		// exit ì…ë ¥í•˜ë©´ í”„ë¡œê·¸ë¨ ì¢…ë£Œ
+			printf("[í”„ë¡œê·¸ë¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.]\n");
 			break;
 		}
 
-		if (strcmp(input, "blj\n") == 0) {	// blj ÀÔ·Â ¹ŞÀ¸¸é ºí·¢Àè ½ÇÇà
-			printf("[ºí·¢Àè °ÔÀÓÀ» ½ÇÇàÇÕ´Ï´Ù.]\n");
-			_getcwd(buf, 512);				// ÇöÀç ½ÇÇà °æ·Î ¾ò±â
+		if (strcmp(input, "blj\n") == 0) {	// blj ì…ë ¥ ë°›ìœ¼ë©´ ë¸”ë™ì­ ì‹¤í–‰
+			printf("[ë¸”ë™ì­ ê²Œì„ì„ ì‹¤í–‰í•©ë‹ˆë‹¤.]\n");
+			_getcwd(buf, 512);				// í˜„ì¬ ì‹¤í–‰ ê²½ë¡œ ì–»ê¸°
 			system(strcat(buf, "\\bljc.jar"));
 			continue;
 		}
 
-		// buf ¹è¿­¿¡ '\n' ¹®ÀÚ Á¦°Å
+		if (strcmp(input, "hangman\n") == 0) {	// hangman ì…ë ¥ ë°›ìœ¼ë©´ í–‰ë§¨ ì‹¤í–‰
+			printf("[í–‰ë§¨ ê²Œì„ì„ ì‹¤í–‰í•©ë‹ˆë‹¤.]\n");
+			_getcwd(buf, 512);				// í˜„ì¬ ì‹¤í–‰ ê²½ë¡œ ì–»ê¸°
+			system(strcat(buf, "\\í–‰ë§¨.exe"));
+			continue;
+		}
+		
+		// buf ë°°ì—´ì— '\n' ë¬¸ì ì œê±°
 		len = (int)strlen(buf);
 		if (buf[len - 1] == '\n')
 			buf[len - 1] = '\0';
 
-		// input ¹è¿­¿¡ '\n' ¹®ÀÚ Á¦°Å
+		// input ë°°ì—´ì— '\n' ë¬¸ì ì œê±°
 		len = (int)strlen(input);
 		if (input[len - 1] == '\n')
 			input[len - 1] = '\0';
 		
-		// ¼­¹ö·Î µ¥ÀÌÅÍ º¸³»±â
-		if (strlen(input) == 0)	continue;	// ¸¸ÀÏ »ç¿ëÀÚ°¡ ¾Æ¹«°Íµµ ÀÔ·ÂÇÏÁö ¾Ê¾Ò´Ù¸é ³Ñ±â±â
+		// ì„œë²„ë¡œ ë°ì´í„° ë³´ë‚´ê¸°
+		if (strlen(input) == 0)	continue;	// ë§Œì¼ ì‚¬ìš©ìê°€ ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ë‹¤ë©´ ë„˜ê¸°ê¸°
 
 		retval = send(sock, buf, (int)strlen(buf), 0);
 		if (retval == SOCKET_ERROR) {
 			err_display("send()");
 			break;
 		}
-		printf("[TCP Å¬¶óÀÌ¾ğÆ®] %d¹ÙÀÌÆ®¸¦ º¸³Â½À´Ï´Ù.\n\n", retval);
+		printf("[TCP í´ë¼ì´ì–¸íŠ¸] %dë°”ì´íŠ¸ë¥¼ ë³´ëƒˆìŠµë‹ˆë‹¤.\n\n", retval);
 	}
 
-	// ¼ÒÄÏ ´İ±â
+	// ì†Œì¼“ ë‹«ê¸°
 	closesocket(sock);
 
-	// À©¼Ó Á¾·á
+	// ìœˆì† ì¢…ë£Œ
 	WSACleanup();
 	return 0;
 }
 
 
 /*
-Âü°í¹®Çå ¸ñ·Ï : 
-https://pracon.tistory.com/123 (cmd ÄÜ¼Ö¿¡¼­ÀÇ gotoxy()ÇÔ¼ö¸¦ ÀÌ¿ëÇÑ Ä¿¼­ À§Ä¡ ÀÌµ¿ Å×Å©´Ğ)
+ì°¸ê³ ë¬¸í—Œ ëª©ë¡ : 
+https://pracon.tistory.com/123 (cmd ì½˜ì†”ì—ì„œì˜ gotoxy()í•¨ìˆ˜ë¥¼ ì´ìš©í•œ ì»¤ì„œ ìœ„ì¹˜ ì´ë™ í…Œí¬ë‹‰)
 */
